@@ -12,11 +12,22 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes("@") && enteredPassword.trim().length > 6
-    );
-    // setFormIsValid is not needed because React ensure the related value is never
-  }, [enteredEmail, enteredPassword]);
+    // Use debouncing so we check validity only one time instead of for each keystroke 
+    // Cleared for each key stroke so only one timer will complete in general
+    const identifier = setTimeout(() => {
+      console.log('Checking form validity!');
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return () => {
+      console.log('cleanup');
+      // Built in browser function 
+      clearTimeout(identifier);
+    };
+    /* setFormIsValid is not needed because React ensure that those functions never change */
+  }, /* Dependencies */ [enteredEmail, enteredPassword]);
 
     const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
