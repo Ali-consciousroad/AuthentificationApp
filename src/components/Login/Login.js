@@ -12,6 +12,13 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
+    console.log('EFFECT RUNNING');
+    return () => {
+      console.log('EFFECT CLEANUP');
+    };
+  }, []);
+
+  useEffect(() => {
     // Use debouncing so we check validity only one time instead of for each keystroke 
     // Cleared for each key stroke so only one timer will complete in general
     const identifier = setTimeout(() => {
@@ -21,6 +28,7 @@ const Login = (props) => {
       );
     }, 500);
 
+    // Clean up function 
     return () => {
       console.log('cleanup');
       // Built in browser function 
